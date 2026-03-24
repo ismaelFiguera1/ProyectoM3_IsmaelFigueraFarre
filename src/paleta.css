@@ -1,0 +1,11 @@
+/* === PALETA DE COLORES === */
+:root {
+  --color-bg:         #020001;  /* negro casi puro — fondo general */
+  --color-surface:    #340016;  /* vino oscuro — header, footer, tarjetas */
+  --color-primary:    #9f102c;  /* rojo carmesí — botones, acentos */
+  --color-secondary:  #d43b2d;  /* rojo-naranja — hover, estados activos */
+  --color-accent:     #fe6c2b;  /* naranja vivo — highlights, énfasis */
+  --color-text:       #f0e0dc;  /* blanco cálido — texto principal */
+  --color-text-muted: #b08070;  /* beige apagado — texto secundario */
+  --color-white:      #ffffff;
+}
