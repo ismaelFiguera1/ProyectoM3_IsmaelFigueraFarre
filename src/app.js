@@ -1,5 +1,6 @@
 import { initChat } from './chat.js';
 
+// Devuelve el HTML de la vista Home
 function homeView() {
   return `
     <h1>Habla con Jon Snow</h1>
@@ -7,6 +8,7 @@ function homeView() {
   `;
 }
 
+// Devuelve el HTML de la vista Chat (área de mensajes + formulario)
 function chatView() {
   return `
     <section id="chat-container">
@@ -19,6 +21,7 @@ function chatView() {
   `;
 }
 
+// Devuelve el HTML de la vista About
 function aboutView() {
   return `
     <h1>About</h1>
@@ -26,7 +29,7 @@ function aboutView() {
   `;
 }
 
-
+// Inyecta en #app el HTML correspondiente a la ruta actual
 function renderView() {
   const path = window.location.pathname;
   const app = document.getElementById('app');
@@ -41,12 +44,13 @@ function renderView() {
   }
 }
 
+// Cambia la URL sin recargar la página y renderiza la vista correspondiente
 function navigate(path) {
   window.history.pushState({}, '', path);
   renderView();
 }
 
-// Intercepta los clicks del nav para no recargar la página
+// Intercepta los clicks del nav para que no recarguen la página
 document.addEventListener('click', (e) => {
   if (e.target.matches('nav a')) {
     e.preventDefault();
@@ -54,8 +58,8 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Back/forward del navegador
+// Permite que los botones back/forward del navegador funcionen correctamente
 window.addEventListener('popstate', renderView);
 
-// Renderiza la vista al cargar la página
+// Renderiza la vista inicial al cargar la página
 renderView();

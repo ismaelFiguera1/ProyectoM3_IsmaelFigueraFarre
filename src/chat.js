@@ -1,5 +1,10 @@
+// Historial de mensajes de la sesión actual
+// Cada mensaje: { role: "user" | "character", content: string }
 let messages = [];
 
+// Recorre el array de mensajes y genera el HTML en el DOM
+// Aplica clase .user o .character según el rol para diferenciarlos visualmente
+// Hace scroll automático al último mensaje
 function renderMessages() {
   const messagesDiv = document.getElementById("messages");
 
@@ -16,6 +21,11 @@ function renderMessages() {
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
+// Maneja el envío del formulario:
+// 1. Añade el mensaje del usuario al historial
+// 2. Envía todo el historial a /api/functions
+// 3. Añade la respuesta del personaje al historial
+// 4. En caso de error, muestra un mensaje en personaje
 async function handleSubmit(e) {
   e.preventDefault();
 
@@ -44,6 +54,9 @@ async function handleSubmit(e) {
   renderMessages();
 }
 
+// Inicializa el chat cuando se carga la vista /chat
+// Usa removeEventListener antes de añadir para evitar listeners duplicados
+// si el usuario navega al chat varias veces en la misma sesión
 export function initChat() {
   const form = document.getElementById("chat-form");
   form.removeEventListener("submit", handleSubmit);
