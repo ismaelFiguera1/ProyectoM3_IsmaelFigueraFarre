@@ -46,6 +46,7 @@ nav a:hover {
 main {
   flex: 1;
   padding: 1rem;
+  overflow: hidden;
 }
 
 /* FOOTER */
@@ -54,4 +55,84 @@ footer {
   color: var(--color-text-muted);
   text-align: center;
   padding: 1rem;
+}
+
+/* CHAT */
+#chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+#messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+.message {
+  max-width: 75%;
+  padding: 0.6rem 1rem;
+  border-radius: 1rem;
+  line-height: 1.4;
+}
+
+.message p {
+  margin: 0;
+}
+
+.message.user {
+  align-self: flex-end;
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  border-bottom-right-radius: 0.2rem;
+}
+
+.message.character {
+  align-self: flex-start;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  border-bottom-left-radius: 0.2rem;
+}
+
+#chat-form {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
+  border-top: 2px solid var(--color-primary);
+}
+
+#chat-input {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--color-secondary);
+  border-radius: 2rem;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: 1rem;
+  outline: none;
+}
+
+#chat-input:focus {
+  border-color: var(--color-accent);
+}
+
+#chat-form button {
+  padding: 0.6rem 1.2rem;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  border: none;
+  border-radius: 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#chat-form button:hover {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
 }

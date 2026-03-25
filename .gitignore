@@ -1,3 +1,5 @@
 .env
 *.pdf
 .vscode/
+.vercel/
+node_modules/

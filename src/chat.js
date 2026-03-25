@@ -16,7 +16,7 @@ function renderMessages() {
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
 
   const input = document.getElementById("chat-input");
@@ -24,9 +24,23 @@ function handleSubmit(e) {
   if (!text) return;
 
   messages.push({ role: "user", content: text });
-  messages.push({ role: "character", content: "You know nothing." });
-
   input.value = "";
+  renderMessages();
+
+  try {
+    const response = await fetch("/api/functions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages }),
+    });
+
+    const data = await response.json();
+    if (!response.ok || !data.reply) throw new Error(data.error);
+    messages.push({ role: "character", content: data.reply });
+  } catch (error) {
+    messages.push({ role: "character", content: "Something is wrong. The ravens are not responding." });
+  }
+
   renderMessages();
 }
 
