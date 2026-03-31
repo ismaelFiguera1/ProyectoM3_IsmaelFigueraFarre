@@ -1,5 +1,9 @@
 import { initChat } from './chat.js';
 
+// Router minimo de la SPA.
+// Decide que vista pintar segun la URL actual
+// y activa la logica del chat solo en /chat.
+
 // Devuelve el HTML de la vista Home
 function homeView() {
   return `
@@ -29,6 +33,8 @@ function aboutView() {
   `;
 }
 
+// Punto central del routing: pinta la vista correcta en #app.
+// Si la ruta es /chat, tambien monta el formulario con initChat().
 // Inyecta en #app el HTML correspondiente a la ruta actual
 function renderView() {
   const path = window.location.pathname;
@@ -45,12 +51,15 @@ function renderView() {
 }
 
 // Cambia la URL sin recargar la página y renderiza la vista correspondiente
+// Navegacion interna sin recargar toda la pagina.
+// pushState cambia la URL y luego renderView sincroniza la interfaz.
 function navigate(path) {
   window.history.pushState({}, '', path);
   renderView();
 }
 
 // Intercepta los clicks del nav para que no recarguen la página
+// Convierte los enlaces del menu en navegacion SPA.
 document.addEventListener('click', (e) => {
   if (e.target.matches('nav a')) {
     e.preventDefault();

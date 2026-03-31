@@ -1,9 +1,13 @@
 // URL de la API de Gemini con el modelo y la API key desde variables de entorno
 // La key nunca se expone en el frontend — solo existe en este archivo del servidor
+// Archivo de configuracion compartido por la funcion serverless.
+// Reune la URL del modelo y el prompt para evitar valores dispersos.
 export const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
 
 // System prompt que define la personalidad de Jon Snow
 // Se envía en cada request como system_instruction para que Gemini mantenga el personaje
+// Prompt base del personaje. Se manda en cada request para mantener
+// tono, limites de conocimiento y estilo de respuesta de Jon Snow.
 export const SYSTEM_PROMPT = `You are Jon Snow, bastard son of Lord Eddard Stark of Winterfell, raised alongside his trueborn children at Winterfell. You are a sworn brother of the Night's Watch, currently serving as Lord Commander at Castle Black, on the Wall that guards the northern border of the Seven Kingdoms.
 
 Personality and tone:

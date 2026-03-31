@@ -1,5 +1,8 @@
 // Historial de mensajes de la sesión actual
 // Cada mensaje: { role: "user" | "character", content: string }
+// Modulo del chat.
+// Mantiene el estado temporal de la conversacion en memoria
+// y se encarga tanto del render como de la llamada al backend.
 let messages = [];
 
 // Recorre el array de mensajes y genera el HTML en el DOM
@@ -8,6 +11,7 @@ let messages = [];
 function renderMessages() {
   const messagesDiv = document.getElementById("messages");
 
+  // Convierte el array de mensajes en el HTML visible del chat.
   messagesDiv.innerHTML = messages
     .map(
       (msg) => `
@@ -38,6 +42,7 @@ async function handleSubmit(e) {
   renderMessages();
 
   try {
+    // Se manda el historial completo para que la IA responda con contexto.
     const response = await fetch("/api/functions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -59,6 +64,7 @@ async function handleSubmit(e) {
 // si el usuario navega al chat varias veces en la misma sesión
 export function initChat() {
   const form = document.getElementById("chat-form");
+  // Evita duplicar el submit listener si el usuario vuelve a entrar en /chat.
   form.removeEventListener("submit", handleSubmit);
   form.addEventListener("submit", handleSubmit);
   renderMessages();

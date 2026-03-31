@@ -1,5 +1,8 @@
 import { GEMINI_URL, SYSTEM_PROMPT } from "./config.js";
 
+// Handler serverless que hace de puente entre el frontend y Gemini.
+// El navegador habla con esta funcion; esta funcion habla con Gemini.
+
 // Serverless Function de Vercel que actúa como proxy entre el frontend y Gemini.
 // El frontend nunca llama a Gemini directamente — la API key solo existe en el servidor.
 export default async function handler(req, res) {
@@ -18,6 +21,8 @@ export default async function handler(req, res) {
       parts: [{ text: msg.content }],
     }));
 
+    // Enviamos el prompt de sistema y toda la conversacion ya convertida
+    // al formato que espera la API de Gemini.
     const response = await fetch(GEMINI_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -27,6 +32,7 @@ export default async function handler(req, res) {
       }),
     });
 
+    // La respuesta util del modelo llega anidada dentro de candidates.
     const data = await response.json();
     const text = data.candidates[0].content.parts[0].text;
 
