@@ -1,0 +1,69 @@
+/* ============================================
+   ESTILOS GENERALES — punto de entrada principal
+   Importa la paleta y los módulos de cada vista
+   ============================================ */
+
+@import url("paleta.css");
+@import url("home.css");
+@import url("chat.css");
+@import url("about.css");
+
+/* === RESET BASE === */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* === HEADER / NAV === */
+
+header {
+  background-color: var(--color-surface);
+  padding: 1rem;
+}
+
+nav {
+  display: flex;
+  gap: 2rem;
+}
+
+nav a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: var(--color-white);
+}
+
+/* === MAIN === */
+
+main {
+  flex: 1;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+/* === FOOTER === */
+
+footer {
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 1rem;
+}
