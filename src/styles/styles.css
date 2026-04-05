@@ -67,3 +67,62 @@ footer {
   text-align: center;
   padding: 1rem;
 }
+
+/* === TABLET >= 768PX === */
+
+@media (min-width: 768px) {
+  header {
+    padding: 1.25rem 2rem;
+  }
+
+  nav {
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  main {
+    width: 90%;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  footer {
+    padding: 1.25rem;
+  }
+}
+
+/* === ORDENADOR >= 992PX === */
+
+@media (min-width: 992px) {
+  body {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+      "header main"
+      "footer footer";
+  }
+
+  header {
+    grid-area: header;
+    padding: 2rem 1.5rem;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  main {
+    grid-area: main;
+    width: auto;
+    margin: 0;
+    padding: 2rem;
+  }
+
+  footer {
+    grid-area: footer;
+    padding: 1.5rem;
+  }
+}

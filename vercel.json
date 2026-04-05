@@ -3,8 +3,7 @@
     { "source": "/api/(.*)", "destination": "/api/functions" },
     { "source": "/app.js", "destination": "/src/app.js" },
     { "source": "/chat.js", "destination": "/src/chat.js" },
-    { "source": "/styles.css", "destination": "/src/styles.css" },
-    { "source": "/paleta.css", "destination": "/src/paleta.css" },
+    { "source": "/styles/(.*)", "destination": "/src/styles/$1" },
     { "source": "/(.*)", "destination": "/src/index.html" }
   ]
 }
