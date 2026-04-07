@@ -2,6 +2,12 @@
    CHAT — estilos de la vista /chat
    ============================================ */
 
+@font-face {
+  font-family: "UnifrakturCook";
+  src: url("../fonts/UnifrakturCook/UnifrakturCook-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
 /* === CONTENEDOR PRINCIPAL === */
 
 #chat-container {
@@ -10,6 +16,12 @@
   height: 100%;
   max-width: 100%;
   margin: 0 auto;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-image: url("../images/5.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 /* === ÁREA DE MENSAJES === */
@@ -34,13 +46,13 @@
 
 .message p {
   margin: 0;
+  font-family: "UnifrakturCook", serif;
 }
 
 /* === BURBUJA USUARIO === */
 
 .message.user {
   align-self: flex-end;
-  background-color: var(--color-accent);
   color: var(--color-bg);
   border-bottom-right-radius: 0.2rem;
 }
@@ -49,8 +61,7 @@
 
 .message.character {
   align-self: flex-start;
-  background-color: var(--color-primary);
-  color: var(--color-text);
+  color: var(--color-bg);
   border-bottom-left-radius: 0.2rem;
 }
 
@@ -58,31 +69,38 @@
 
 #chat-form {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 0;
-  border-top: 2px solid var(--color-primary);
+  border-top: 1px solid rgba(102, 68, 34, 0.35);
 }
 
 /* === INPUT === */
 
 #chat-input {
   flex: 1;
+  min-width: 0;
   padding: 0.6rem 1rem;
-  border: 1px solid var(--color-secondary);
+  border: 1px solid rgba(102, 68, 34, 0.35);
   border-radius: 2rem;
-  background-color: var(--color-surface);
-  color: var(--color-text);
+  background-color: rgba(247, 238, 214, 0.82);
+  color: #3b2413;
   font-size: 1rem;
   outline: none;
 }
 
+#chat-input::placeholder {
+  color: rgba(73, 45, 23, 0.65);
+}
+
 #chat-input:focus {
-  border-color: var(--color-accent);
+  border-color: #8c4b24;
 }
 
 /* === BOTÓN ENVIAR === */
 
 #chat-form button {
+  flex-shrink: 0;
   padding: 0.6rem 1.2rem;
   background-color: var(--color-secondary);
   color: var(--color-white);
