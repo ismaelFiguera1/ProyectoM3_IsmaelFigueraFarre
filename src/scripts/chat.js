@@ -3,6 +3,8 @@
 // Modulo del chat.
 // Mantiene el estado temporal de la conversacion en memoria
 // y se encarga tanto del render como de la llamada al backend.
+
+import { validacionInput } from "./validation.js";
 let messages = [];
 
 // Recorre el array de mensajes y genera el HTML en el DOM
@@ -35,7 +37,12 @@ async function handleSubmit(e) {
 
   const input = document.getElementById("chat-input");
   const text = input.value.trim();
-  if (!text) return;
+
+  const result = validacionInput(text);
+  if (!result.isValid) {
+    alert(result.error);
+    return;
+  }
 
   messages.push({ role: "user", content: text });
   input.value = "";
@@ -53,7 +60,10 @@ async function handleSubmit(e) {
     if (!response.ok || !data.reply) throw new Error(data.error);
     messages.push({ role: "character", content: data.reply });
   } catch (error) {
-    messages.push({ role: "character", content: "Something is wrong. The ravens are not responding." });
+    messages.push({
+      role: "character",
+      content: "Something is wrong. The ravens are not responding.",
+    });
   }
 
   renderMessages();

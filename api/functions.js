@@ -1,4 +1,5 @@
 import { GEMINI_URL, SYSTEM_PROMPT } from "./config.js";
+import { validacionInput, validateMessagesArray } from "../src/scripts/validation.js";
 
 // Handler serverless que hace de puente entre el frontend y Gemini.
 // El navegador habla con esta funcion; esta funcion habla con Gemini.
@@ -14,6 +15,21 @@ export default async function handler(req, res) {
     // Vercel Dev a veces entrega el body como string — lo parseamos si hace falta
     const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
     const { messages } = body;
+
+    const messagesValidation = validateMessagesArray(messages);
+    if (!messagesValidation.isValid) {
+      return res.status(400).json({ error: messagesValidation.error });
+    }
+
+    for (const msg of messages) {
+      if (msg.role === "user") {
+        const result = validacionInput(msg.content);
+
+        if (!result.isValid) {
+          return res.status(400).json({ error: result.error });
+        }
+      }
+    }
 
     // Gemini usa "user" y "model" — nuestro frontend usa "user" y "character"
     const geminiMessages = messages.map((msg) => ({

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest --pool threads"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +13,7 @@
     "vitest": "^4.1.2"
   },
   "vitest": {
-    "environment": "jsdom"
+    "environment": "jsdom",
+    "pool": "threads"
   }
 }
