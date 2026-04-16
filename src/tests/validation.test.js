@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { validacionInput } from "../scripts/validation.js";
 
 const ERROR_REGEX =
-  "El mensaje solo puede tener mayusculas, minusculas, espacios, comas y puntos.";
+  "El mensaje solo puede tener mayusculas, minusculas, espacios, comas, puntos, interrogantes y exclamaciones.";
 const ERROR_MINIMO = "El mensaje debe tener minimo 1 caracter de longitud.";
 const ERROR_MAXIMO = "El mensaje debe tener maximo 500 caracteres de longitud.";
 
@@ -17,6 +17,13 @@ describe("validacionInput", () => {
 
   it("acepta acentos, enies, comas y puntos", () => {
     expect(validacionInput("\u00C1lvaro N\u00FA\u00F1ez, listo.")).toEqual({
+      isValid: true,
+      error: null,
+    });
+  });
+
+  it("acepta interrogantes y exclamaciones", () => {
+    expect(validacionInput("\u00BFJon Snow?!")).toEqual({
       isValid: true,
       error: null,
     });
@@ -76,7 +83,7 @@ describe("validacionInput", () => {
   });
 
   it("rechaza strings con signos no permitidos", () => {
-    expect(validacionInput("Jon Snow!")).toEqual({
+    expect(validacionInput("Jon Snow:")).toEqual({
       isValid: false,
       error: ERROR_REGEX,
     });
