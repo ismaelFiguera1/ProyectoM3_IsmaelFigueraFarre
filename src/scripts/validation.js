@@ -1,11 +1,12 @@
 export function validacionInput(valorInput) {
-  const regexMensaje = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ ,.]+$/;
+  const regexMensaje = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ ,.?!¿¡]+$/;
+  const errorRegex =
+    "El mensaje solo puede tener mayusculas, minusculas, espacios, comas, puntos, interrogantes y exclamaciones.";
 
   if (typeof valorInput !== "string") {
     return {
       isValid: false,
-      error:
-        "El mensaje solo puede tener mayusculas, minusculas, espacios, comas y puntos.",
+      error: errorRegex,
     };
   }
 
@@ -26,8 +27,7 @@ export function validacionInput(valorInput) {
   if (!regexMensaje.test(mensaje)) {
     return {
       isValid: false,
-      error:
-        "El mensaje solo puede tener mayusculas, minusculas, espacios, comas y puntos.",
+      error: errorRegex,
     };
   }
 

@@ -1,252 +1,235 @@
-﻿# Proyecto Henry - Chat con Jon Snow
+# Chat IA con Jon Snow
 
-## Descripcion
+Aplicacion web tipo SPA que permite conversar con un personaje ficticio mediante la API de Gemini, usando una Serverless Function de Vercel para proteger la API key y aislar la logica sensible del frontend.
 
-Este proyecto es una aplicacion web tipo SPA hecha con JavaScript que permite conversar con Jon Snow como personaje ficticio (El de los libros, no el de la serie). La interfaz vive en el frontend dentro de `src/`, mientras que la integracion con Gemini se hace desde una funcion serverless (de Vercel) en `api/` para no exponer la API key en el navegador.
+> Importante:
+> Repositorio: https://github.com/ismaelFiguera1/ProyectoM3_IsmaelFigueraFarre
+> Despliegue: https://proyecto-henry.vercel.app
 
-## Objetivo
+## Demo
 
-El objetivo del proyecto es construir un chat con personaje que:
+- Produccion: https://proyecto-henry.vercel.app
+- Repositorio: https:/github.com//ismaelFiguera1/ProyectoM3_IsmaelFigueraFarre
 
-- use una SPA sencilla en el frontend
-- tenga routing sin recargar la pagina
-- mantenga el historial de conversacion durante la sesion
-- consuma un modelo de IA sin exponer secretos en cliente
-- pueda desplegarse facilmente en Vercel
+## Descripcion del proyecto
 
-## Que hace la aplicacion
+Este proyecto es una aplicacion web desarrollada con HTML, CSS y JavaScript que simula un chat con un personaje ficticio, Jon Snow. El usuario puede enviar mensajes desde la interfaz y recibir respuestas generadas mediante la API de Gemini.
 
-- Muestra una vista `Home`
-- Muestra una vista `Chat`
-- Muestra una vista `About`
-- Permite escribir mensajes al personaje
-- Envia el historial completo al backend para conservar contexto
-- Responde en espanol y en personaje como Jon Snow
+La aplicacion esta planteada como una SPA sencilla, evitando recargas completas de pagina y gestionando la navegacion y la interaccion desde JavaScript mediante History API. Para proteger la API key, la comunicacion con Gemini no se realiza directamente desde el navegador, sino a traves de una Serverless Function desplegada en Vercel.
 
-## Stack tecnico
+El objetivo principal del proyecto es practicar la integracion entre frontend, funciones serverless, consumo de APIs externas y despliegue en produccion.
 
-- Frontend: HTML, CSS y JavaScript
-- Routing: History API (`pushState` + `popstate`)
-- Backend: Serverless Functions de Vercel
-- IA: Google Gemini
-- Despliegue: Vercel
+## Funcionalidades
 
-## Flujo general de la app
+- Chat interactivo con un personaje ficticio.
+- Envio de mensajes desde el frontend a una funcion serverless.
+- Respuestas generadas dinamicamente mediante Gemini.
+- Proteccion de la API key usando variables de entorno en Vercel.
+- Separacion entre la logica del frontend y la logica sensible del backend mediante una Serverless Function.
+- Validacion de mensajes antes de procesarlos.
+- Despliegue en produccion mediante Vercel.
+- Interfaz web tipo SPA sin recargas completas de pagina.
 
-1. `src/index.html` carga la aplicacion.
-2. `src/app.js` decide que vista renderizar segun la ruta actual.
-3. Si la ruta es `/chat`, se monta el formulario y se inicializa el chat.
-4. `src/chat.js` guarda los mensajes en memoria y renderiza la conversacion.
-5. Al enviar un mensaje, el frontend llama a `/api/functions`.
-6. `api/functions.js` transforma los mensajes al formato esperado por Gemini.
-7. `api/config.js` aporta la URL del modelo y el `SYSTEM_PROMPT`.
-8. Gemini devuelve una respuesta y el backend la manda de vuelta al frontend.
-9. El frontend inserta la respuesta del personaje en pantalla.
+## Tecnologías y herramientas utilizadas
 
-## Restricciones del enunciado y decisiones de implementacion
+- HTML
+- CSS
+- JavaScript
+- Vercel Serverless Functions
+- Google Gemini API
+- Node.js
+- Vitest
+- Vercel CLI para desarrollo local y despliegue
 
-Varias partes del proyecto no se presentan aqui como decisiones propias, porque ya venian marcadas por la guia. Por ejemplo: hacer una SPA, implementar routing, crear una funcion serverless, conectar frontend y backend y desplegar en Vercel.
+## Arquitectura del proyecto
 
-Lo que si se detalla a continuacion son las decisiones tomadas dentro de esas restricciones.
+El proyecto separa la parte visual de la lógica sensible mediante una arquitectura sencilla basada en frontend estático y backend serverless.
 
-### 1. Elegir a Jon Snow y trabajar con su version de los libros
+El frontend se encarga de mostrar la interfaz, validar el input, mantener el historial temporal de la conversación y enviar el array `messages` a la función serverless.
 
-Una decision propia del proyecto fue escoger a Jon Snow como personaje y, ademas, acotarlo al canon de los libros. Eso ayuda a mantener una personalidad mas consistente y evita mezclar informacion de la serie con la novela.
-
-### 2. Mantener el historial del chat en memoria
-
-El historial actual se guarda en un array dentro de `src/chat.js`. Esto fue una decision consciente para priorizar simplicidad y funcionalidad.
-Anque da problemas como:
-
-- si el usuario recarga la pagina, el historial se pierde
-- no hay persistencia entre sesiones
-
-### 3. Enviar el historial completo en cada request
-
-Cada vez que el usuario manda un mensaje, el frontend envia todos los mensajes acumulados. Esto permite que Gemini tenga el contexto completo de la conversacion sin necesidad de base de datos ni sesiones de servidor.
-
-Es una buena solucion para una primera version, aunque no es la mas eficiente si la conversacion crece mucho.
-
-### 4. Disenar un system prompt fuerte y acotado
-
-El personaje no responde "como una IA generica", sino como Jon Snow con reglas claras:
-
-- habla en espanol
-- responde corto
-- se mantiene en personaje
-- se limita al canon de los libros
-- no conoce el mundo moderno
-
-Esta decision mejora la consistencia de las respuestas y hace que la experiencia sea mas creible.
-
-### 5. Mantener el prompt en codigo y tambien en un archivo de apoyo
-
-El prompt esta embebido en `api/config.js` para que el backend lo use directamente. Ademas existe `system_prompt_jon_snow.txt` como referencia legible.
-
-Esta decision ayuda a revisar el prompt mas facilmente, aunque a futuro convendria centralizarlo en un solo sitio para evitar duplicacion.
-
-### 6. Mantener una base de estilos mobile-first
-
-Los estilos parten de una base simple y compatible con pantallas pequenas. Esta decision es buena como punto de partida, aunque todavia faltan `media queries` para ajustar mejor tablet y escritorio.
-
-### 7. Priorizar primero el despliegue funcional y despues el hardening
-
-Durante esta fase se priorizo validar que el flujo completo funcionara en produccion:
-
-- frontend en Vercel
-- funcion serverless operativa
-- variable de entorno configurada
-- chat respondiendo desde la URL desplegada
-
-La idea fue comprobar primero que el producto funciona de punta a punta y dejar para despues la robustez final, los tests y algunas mejoras de seguridad.
-
-## Archivos clave
-
-### `src/app.js`
-
-Controla el routing SPA y el render de las vistas.
-
-### `src/chat.js`
-
-Gestiona:
-
-- el estado local del chat
-- el render de mensajes
-- el envio del formulario
-- la llamada al backend
-
-### `api/functions.js`
-
-Es la funcion serverless principal. Recibe el historial, lo adapta al formato de Gemini y devuelve la respuesta del personaje.
-
-### `api/config.js`
-
-Define:
-
-- la URL del modelo Gemini con la variable de entorno
-- el `SYSTEM_PROMPT`
-
-### `vercel.json`
-
-Define las `rewrites` para:
-
-- enrutar `/api/*` a la funcion serverless
-- servir la SPA desde `src/index.html`
-- exponer los assets del frontend
+La función serverless recibe ese historial, vuelve a validar los mensajes, utiliza la variable de entorno `GEMINI_API_KEY`, añade el prompt del personaje y realiza la petición a la API de Gemini. Después devuelve la respuesta al frontend para mostrarla en el chat.
 
 ## Variables de entorno
 
-La aplicacion necesita esta variable:
+El proyecto necesita una variable de entorno para poder comunicarse con la API de Gemini:
 
 ```env
-GEMINI_API_KEY=tu_clave_aqui
+GEMINI_API_KEY=tu_api_key_de_gemini
 ```
 
-En local se puede usar un archivo `.env`.
+## Instalación y ejecución local
 
-En Vercel, la variable debe configurarse en el proyecto desde:
+Antes de clonar y ejecutar el proyecto, es necesario tener instaladas algunas herramientas de forma global en el ordenador.
 
-- Settings
-- Environment Variables
+Este proyecto utiliza **Node.js** para gestionar dependencias con npm y **Vercel CLI** para ejecutar en local el frontend junto con la Serverless Function ubicada en la carpeta `api/`.
 
-Importante:
+Node.js y Vercel CLI no forman parte del código del proyecto. Son herramientas externas que deben estar instaladas en el sistema.
 
-- `.env` no debe subirse al repositorio
-- la clave real nunca debe quedar en el frontend
+Puedes comprobar si ya están instaladas con:
 
-## Como ejecutar el proyecto en local
+```bash
+node -v
+npm -v
+vercel --version
+```
 
-### Opcion recomendada: Vercel Dev
+Este proyecto debe ejecutarse con `vercel dev` porque utiliza una **Serverless Function** dentro de la carpeta `api/`. De esta forma, Vercel levanta tanto el frontend estático como la función backend necesaria para comunicarse con Gemini.
 
-Es la mejor opcion porque el proyecto depende de una funcion serverless.
+### 1. Clonar el repositorio
 
-1. Crear un archivo `.env` a partir de `.env.example`
-2. AÃ±adir una `GEMINI_API_KEY` valida
-3. Ejecutar:
+```bash
+git clone "https://github.com/ismaelFiguera1/ProyectoM3_IsmaelFigueraFarre.git"
+```
+
+### 2. Entrar en la carpeta del proyecto
+
+```bash
+cd ProyectoM3_IsmaelFigueraFarre
+```
+
+### 3. Instalar las dependencias
+
+```bash
+npm install
+```
+
+Este comando instala las dependencias definidas en `package.json` y reconstruye la carpeta `node_modules/`.
+
+### 4. Configurar la variable de entorno
+
+Crear un archivo `.env` en la raíz del proyecto tomando como referencia el archivo `.env.example`.
+
+```env
+GEMINI_API_KEY=tu_api_key_de_gemini
+```
+
+La API key no debe subirse al repositorio. Por eso el archivo `.env` está incluido en `.gitignore`.
+
+### 5. Ejecutar el proyecto en local
 
 ```bash
 vercel dev
 ```
 
-En PowerShell de Windows puede hacer falta usar:
+### 6. Abrir la aplicación en el navegador
 
-```bash
-vercel.cmd dev
+```txt
+http://localhost:3000
 ```
 
-4. Abrir `http://localhost:3000`
+Normalmente, Vercel utilizará el puerto `3000`, aunque en algunos casos puede usar otro distinto si ese puerto ya está ocupado.
 
-### Opcion solo frontend
-
-Se puede abrir el frontend con Live Server o similar, pero el chat no funcionara correctamente si no esta disponible la funcion serverless.
+Si todo está configurado correctamente, la aplicación se abrirá en local y podrá comunicarse con Gemini a través de la función serverless.
 
 ## Despliegue en Vercel
 
-El proyecto esta preparado para desplegarse con Vercel.
+Este proyecto puede desplegarse en Vercel desde la terminal usando **Vercel CLI**. El objetivo de este proceso es dejar publicada tanto la parte visual de la aplicacion como la **Serverless Function** que vive en la carpeta `api/`.
 
-Pasos generales:
+Todos los comandos de esta seccion deben ejecutarse desde la carpeta raiz del proyecto. La carpeta `.vercel/`, que no se sube a GitHub porque esta incluida en `.gitignore`, guarda la vinculacion local entre esta carpeta del ordenador y el proyecto correspondiente dentro de Vercel.
 
-1. Vincular el repositorio o el directorio a un proyecto de Vercel
-2. Configurar `GEMINI_API_KEY`
-3. Ejecutar un deploy
+Antes de empezar, hace falta:
 
-Comandos utiles:
+- Tener una cuenta en Vercel.
+- Tener Vercel CLI disponible en el ordenador.
+- Estar situado dentro de la carpeta raiz del proyecto.
 
-```bash
-vercel.cmd
-```
+### 1. Comprobar que Vercel CLI esta disponible
 
 ```bash
-vercel.cmd --prod
+vercel --version
 ```
 
-## Estado actual del proyecto
+Este comando sirve para comprobar que Vercel CLI esta instalado correctamente en el ordenador.
 
-### Ya implementado
+Si el comando no funciona, se puede instalar Vercel CLI de forma global con:
 
-- SPA con routing basico
-- Chat con mensajes en memoria
-- Serverless Function para hablar con Gemini
-- System prompt del personaje
-- Variables de entorno
-- Despliegue en Vercel
+```bash
+npm install -g vercel
+```
 
-### Todavia pendiente o mejorable
+### 2. Iniciar sesion en Vercel
 
-- agregar media queries reales
-- escribir tests unitarios
-- mejorar el manejo de errores en backend
-- mover `api/config.js` fuera de `api/` para evitar que Vercel lo trate como funcion separada
-- evitar renderizar HTML dinamico sin sanitizar en el chat
-- documentar mejor scripts y comandos en `package.json`
+```bash
+vercel login
+```
 
-## Limitaciones conocidas
+Este comando inicia la sesion de tu cuenta de Vercel desde la terminal. Si es la primera vez que lo usas, Vercel te pedira autenticarte siguiendo el metodo que te muestre en pantalla.
 
-- El historial se pierde al recargar la pagina
-- No hay persistencia en base de datos
-- No hay autenticacion ni control de usuarios
-- No hay tests automatizados
-- El backend asume una respuesta valida de Gemini y puede mejorarse
-- La UI funciona, pero aun no esta adaptada con detalle a todos los breakpoints
+Hasta que no inicies sesion, la terminal no podra vincular esta carpeta a un proyecto de Vercel ni subir despliegues.
 
-## Posibles mejoras futuras
+### 3. Vincular esta carpeta local con un proyecto de Vercel
 
-- Persistir conversaciones en `localStorage` o base de datos
-- AÃ±adir tests para routing, chat y backend
-- Mejorar la seguridad del render de mensajes
-- Separar configuracion de servidor y logica de handler
-- AÃ±adir loading state y errores mas claros en la interfaz
-- Crear una vista 404
-- Refinar la experiencia responsive
+```bash
+vercel link
+```
 
-## Conclusiones
+Este comando conecta la carpeta actual con un proyecto concreto dentro de tu cuenta de Vercel.
 
-Este proyecto demuestra una arquitectura pequena pero completa para un chat con personaje:
+Si es la primera vez que lo haces, Vercel puede ir preguntando varias cosas en la terminal, por ejemplo:
 
-- frontend simple
-- routing SPA
-- backend serverless
-- integracion con IA
-- despliegue real
+- Que cuenta o scope quieres usar.
+- Si quieres enlazar con un proyecto ya existente o crear uno nuevo.
+- El nombre que tendra el proyecto dentro de Vercel.
+- Que directorio contiene el proyecto. En este caso, la raiz actual del repositorio.
 
-La decision principal fue priorizar claridad y funcionalidad antes que complejidad arquitectonica. Eso permitio validar el producto en produccion rapidamente y dejar bien identificadas las mejoras necesarias para una siguiente iteracion mas robusta.
+Cuando este paso termina, Vercel crea o actualiza la carpeta `.vercel/` con la informacion de vinculacion local.
+
+### 4. Configurar la variable de entorno en produccion
+
+```bash
+vercel env add GEMINI_API_KEY production
+```
+
+Este comando añade la variable `GEMINI_API_KEY` al entorno de produccion del proyecto de Vercel que acabas de vincular.
+
+Es importante entender que esta variable no se guarda de forma global en tu ordenador. Se guarda dentro de ese proyecto concreto de Vercel, para que la Serverless Function pueda leerla cuando la aplicacion este desplegada.
+
+Cuando Vercel pida el valor de la variable, se debe pegar unicamente la API key, sin escribir `GEMINI_API_KEY=` delante.
+
+Ejemplo correcto:
+
+```txt
+AIza...
+```
+
+Ejemplo incorrecto:
+
+```txt
+GEMINI_API_KEY=AIza...
+```
+
+Si mas adelante cambias la clave, tendras que actualizar la variable en Vercel y volver a desplegar para que el cambio quede reflejado en produccion.
+
+### 5. Desplegar en produccion
+
+```bash
+vercel --prod
+```
+
+Este comando crea un despliegue de produccion.
+
+Durante este proceso, Vercel utilizara la configuracion definida en `vercel.json`, publicara el frontend estatico y dejara disponible la Serverless Function ubicada en `api/`, que es la encargada de comunicarse con Gemini sin exponer la API key en el navegador.
+
+Cuando el despliegue termine, Vercel mostrara en la terminal una URL publica para acceder a la aplicacion ya publicada.
+
+En este proyecto, la URL publica del chat es:
+
+```txt
+https://proyecto-henry.vercel.app
+```
+
+### 6. Comprobar que el despliegue funciona
+
+Una vez abierta la URL publica, conviene hacer una comprobacion sencilla:
+
+- Entrar en la aplicacion.
+- Abrir la vista del chat.
+- Enviar un mensaje de prueba.
+- Confirmar que Gemini responde correctamente.
+
+Si la pagina carga pero el chat no responde, lo primero que hay que revisar es que `GEMINI_API_KEY` este bien configurada en el proyecto de Vercel y que el despliegue se haya hecho despues de añadir esa variable.
+
+## Enlaces importantes
+
+- Repositorio: https://github.com/ismaelFiguera1/ProyectoM3_IsmaelFigueraFarre
+- Despliegue: https://proyecto-henry.vercel.app
